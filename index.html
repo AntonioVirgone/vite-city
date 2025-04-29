@@ -2,11 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Tile Game</title>
   <link rel="stylesheet" href="/src/style.css" />
-  <title>Game Project</title>
 </head>
 <body>
-<div id="app"></div>
+<div id="start-screen">
+  <h1>Tile Game</h1>
+  <button id="start-button">Start</button>
+</div>
+
+<div id="game-screen" style="display: none;">
+  <div class="sidebar">
+    <h2>Eventi</h2>
+    <button data-event="fire">Fuoco</button>
+    <button data-event="water">Acqua</button>
+    <button data-event="grass">Erba</button>
+
+    <div class="collected-counter">
+      Raccolti: <span id="collected-count">0</span>
+    </div>
+  </div>
+  <div class="grid"></div>
+</div>
 
 <script type="module" src="/src/main.ts"></script>
 </body>
