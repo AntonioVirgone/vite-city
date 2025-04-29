@@ -4,11 +4,23 @@ export class Tile {
     element: HTMLDivElement;
     eventType: EventType = EventType.None;
     private isAnimating: boolean = false;
-    private transitionDuration = 5000; // ms (puoi renderlo modificabile da fuori)
+    private durationMap: Record<EventType, number> = {
+        [EventType.None]: 0,
+        [EventType.Fire]: 3000,
+        [EventType.Water]: 6000,
+        [EventType.Grass]: 4500,
+    };
+    private progressBar: HTMLDivElement;
 
     constructor(parent: HTMLElement, onClick: (tile: Tile) => void) {
         this.element = document.createElement("div");
         this.element.className = "tile";
+
+        // Progress bar
+        this.progressBar = document.createElement("div");
+        this.progressBar.className = "progress-bar";
+        this.element.appendChild(this.progressBar);
+
         this.element.addEventListener("click", () => {
             if (this.isAnimating) return;
 
@@ -24,10 +36,11 @@ export class Tile {
 
     setEvent(eventType: EventType) {
         this.eventType = eventType;
-        this.startTransition(eventType);
+        const duration = this.durationMap[eventType];
+        this.startTransition(eventType, duration);
     }
 
-    private startTransition(eventType: EventType) {
+    private startTransition(eventType: EventType, duration: number) {
         this.isAnimating = true;
 
         const colorSteps = this.getColorSteps(eventType);
@@ -35,16 +48,24 @@ export class Tile {
         // STEP 1
         this.element.style.backgroundColor = colorSteps[0];
 
-        setTimeout(() => {
-            // STEP 2
-            this.element.style.backgroundColor = colorSteps[1];
-        }, this.transitionDuration / 3);
+        // Show progress bar
+        this.progressBar.style.transition = `width ${duration}ms linear`;
+        this.progressBar.style.width = "100%";
+        this.progressBar.style.opacity = "1";
 
+        // Mid step
         setTimeout(() => {
-            // STEP 3 (finale)
+            this.element.style.backgroundColor = colorSteps[1];
+        }, duration / 3);
+
+        // Final step
+        setTimeout(() => {
             this.element.style.backgroundColor = colorSteps[2];
             this.isAnimating = false;
-        }, this.transitionDuration);
+            this.progressBar.style.opacity = "0";
+            this.progressBar.style.transition = "none";
+            this.progressBar.style.width = "0";
+        }, duration);
     }
 
     private getColorSteps(eventType: EventType): string[] {
@@ -56,17 +77,12 @@ export class Tile {
             case EventType.Grass:
                 return ["#ccffcc", "#66cc66", "#006600"];
             default:
-                return ["lightgray", "lightgray", "lightgray"];
+                return ["#FF9933", "#FF9933", "#FF9933"];
         }
     }
 
     private reset() {
         this.eventType = EventType.None;
-        this.element.style.backgroundColor = "lightgray";
-    }
-
-    // (Opzionale) Metodo per personalizzare la durata
-    setTransitionDuration(ms: number) {
-        this.transitionDuration = ms;
+        this.element.style.backgroundColor = "#FF9933";
     }
 }
