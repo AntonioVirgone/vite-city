@@ -1,8 +1,8 @@
 import { StartScreen } from "./screens/StartScreen";
+import { GameScreen } from "./screens/GameScreen";
 
-window.addEventListener("DOMContentLoaded", () => {
-    const app = document.getElementById("app");
-    if (app) {
-        new StartScreen(app);
-    }
+const startScreen = new StartScreen(() => {
+    startScreen.hide();
+    const gameScreen = new GameScreen();
+    gameScreen.show();
 });

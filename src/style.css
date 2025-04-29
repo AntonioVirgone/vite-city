@@ -1,21 +1,10 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.start-screen, .event-menu {
+#game-screen {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px;
 }
 
-#startButton, .event-menu button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 18px;
-  cursor: pointer;
+.sidebar {
+  width: 200px;
+  padding: 10px;
 }
 
 .grid {
@@ -23,15 +12,30 @@ body {
   grid-template-columns: repeat(20, 30px);
   grid-template-rows: repeat(20, 30px);
   gap: 2px;
-  justify-content: center;
-  margin-top: 20px;
 }
 
 .tile {
   width: 30px;
   height: 30px;
-  background-color: lightgray;
+  background-color: #FF9933;
+  position: relative;
+  transition: background-color 1s linear;
+}
+
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.collected-counter {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #eee;
   border: 1px solid #ccc;
-  cursor: pointer;
-  transition: background-color 0.2s;
 }

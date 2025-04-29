@@ -1,43 +1,44 @@
 import { Tile } from "../components/Tile";
-import { EventType } from "../types/Events";
+import { Collector } from "../utils/Collector";
+import {EventType} from "../types/Events.ts";
 
 export class GameScreen {
+    private element = document.getElementById("game-screen")!;
+    private grid = document.querySelector(".grid")!;
+    private buttons = document.querySelectorAll("[data-event]");
     private selectedEvent: EventType = EventType.None;
+    private collector = new Collector();
 
-    constructor(private app: HTMLElement) {
-        this.render();
-    }
+    private tiles: Tile[] = [];
 
-    private render() {
-        this.app.innerHTML = `
-      <div class="event-menu">
-        <button id="noneBtn">Nessun Evento</button>
-        <button id="fireBtn">Fuoco</button>
-        <button id="waterBtn">Acqua</button>
-        <button id="grassBtn">Erba</button>
-      </div>
-      <div class="grid"></div>
-    `;
+    constructor() {
+        this.buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const type = (btn as HTMLElement).dataset.event!;
+                this.selectedEvent = type as EventType;
+            });
+        });
 
-        this.setupEventButtons();
         this.createGrid();
     }
 
-    private setupEventButtons() {
-        (document.getElementById("noneBtn") as HTMLButtonElement).addEventListener("click", () => this.selectEvent(EventType.None));
-        (document.getElementById("fireBtn") as HTMLButtonElement).addEventListener("click", () => this.selectEvent(EventType.Fire));
-        (document.getElementById("waterBtn") as HTMLButtonElement).addEventListener("click", () => this.selectEvent(EventType.Water));
-        (document.getElementById("grassBtn") as HTMLButtonElement).addEventListener("click", () => this.selectEvent(EventType.Grass));
-    }
-
-    private selectEvent(eventType: EventType) {
-        this.selectedEvent = eventType;
+    show() {
+        this.element.style.display = "flex";
     }
 
     private createGrid() {
-        const grid = document.querySelector(".grid") as HTMLElement;
         for (let i = 0; i < 200; i++) {
-            new Tile(grid, (tile) => tile.setEvent(this.selectedEvent));
+            const tile = new Tile(this.grid, (tileInstance) => {
+                if (tileInstance.isReadyForReset()) {
+                    tileInstance.reset();
+                    this.collector.add(1); // raccolta completata
+                } else {
+                    tileInstance.setEvent(this.selectedEvent, () => {
+                        // azione completata
+                    });
+                }
+            });
+            this.tiles.push(tile);
         }
     }
 }
