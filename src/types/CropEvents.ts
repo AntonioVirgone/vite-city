@@ -1,4 +1,4 @@
-export enum EventType {
+export enum CropEventType {
     None = "none",
     Fire = "fire",
     Water = "water",
