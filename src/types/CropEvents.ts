@@ -1,6 +1,6 @@
 export enum CropEventType {
     None = "none",
-    Fire = "fire",
-    Water = "water",
-    Grass = "grass",
+    Grain = "grain",
+    Tomato = "tomato",
+    Potato = "potato",
 }

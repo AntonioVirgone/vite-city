@@ -1,27 +1,23 @@
-import {TileType} from "../types/RockEvents.ts";
+import { TileType } from "../types/RockEvents.ts";
 
 export abstract class TileBase {
     protected element: HTMLDivElement;
-    protected isAnimating = false;
     protected progressBar: HTMLDivElement;
-    protected isCompleted = false;
 
-    constructor(parent: Element,
-                onClick: (tile: TileBase) => void,
-                type: TileType) {
+    protected isAnimating = false;
+    protected isCompleted = false;
+    protected tileType: TileType;
+
+    constructor(parent: Element, protected onClick: (tile: TileBase) => void, type: TileType) {
+        this.tileType = type;
+
         this.element = document.createElement("div");
-        this.element.classList.add("tile");
+        this.element.className = "tile";
 
         this.progressBar = document.createElement("div");
         this.progressBar.className = "progress-bar";
+
         this.element.appendChild(this.progressBar);
-
-        if (type === TileType.Mountain) {
-            this.element.classList.add("mountain");
-        }
-
-        this.element.addEventListener("click", () => onClick(this));
-
         parent.appendChild(this.element);
     }
 
@@ -29,12 +25,13 @@ export abstract class TileBase {
         return this.element;
     }
 
-    reset() {
+    public reset(): void {
         this.isCompleted = false;
-        this.isAnimating = true;
+        this.isAnimating = false;
         this.element.style.backgroundColor = "#FF9933";
-        this.progressBar.style.opacity = "0";
+        this.progressBar.style.transition = "none";
         this.progressBar.style.width = "0";
+        this.progressBar.style.opacity = "0";
     }
 
     public isReadyForReset(): boolean {

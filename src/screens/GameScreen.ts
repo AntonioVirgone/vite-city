@@ -1,16 +1,16 @@
-// GameScreen.ts
-import { Collector } from "../utils/Collector";
-import { CropEventType } from "../types/CropEvents.ts";
-import { EnergyManager } from "../utils/EnergyManager.ts";
-import { TileType } from "../types/RockEvents.ts";
-import { TileBase } from "../components/TileBase.ts";
-import { HarvestableTile } from "../components/HarvestableTile.ts";
-import { MountainTile } from "../components/MountainTile.ts";
+import {CropEventType} from "../types/CropEvents.ts";
+import {Collector} from "../utils/Collector.ts";
+import {EnergyManager} from "../utils/EnergyManager.ts";
+import {TileBase} from "../components/TileBase.ts";
+import {TileType} from "../types/RockEvents.ts";
+import {MountainTile} from "../components/MountainTile.ts";
+import {HarvestableTile} from "../components/HarvestableTile.ts";
 
 export class GameScreen {
     private element = document.getElementById("game-screen")!;
     private grid = document.querySelector(".grid")!;
     private buttons = document.querySelectorAll("[data-event]");
+
     private selectedEvent: CropEventType = CropEventType.None;
     private collector = new Collector();
     private energyManager = new EnergyManager();
@@ -28,11 +28,11 @@ export class GameScreen {
         this.createGrid();
     }
 
-    show() {
+    public show(): void {
         this.element.style.display = "flex";
     }
 
-    private createGrid() {
+    private createGrid(): void {
         const gridSize = 10;
 
         for (let y = 0; y < gridSize; y++) {
@@ -44,28 +44,26 @@ export class GameScreen {
                 if (type === TileType.Mountain) {
                     tile = new MountainTile(this.grid, (tileInstance) => {
                         if (this.energyManager.consume(20)) {
-                            tileInstance.destroyMountain(4000, () => {
-                                // eventualmente: callback o suono
-                            });
+                            tileInstance.destroyMountain(4000, () => {});
                         } else {
                             alert("Energia insufficiente per rimuovere la montagna!");
                         }
-                    }, type);
+                    });
                 } else {
                     tile = new HarvestableTile(this.grid, (tileInstance) => {
                         if (tileInstance.isReadyForReset()) {
                             tileInstance.reset();
-                            this.collector.add(1); // raccolta completata
-                            this.energyManager.restore(10); // aumenta di 10 l'energia
-                        } else {
-                            tileInstance.setEvent(this.selectedEvent, () => {
-                                // azione completata
-                            });
+                            this.collector.add(1);
+                            this.energyManager.restore(10);
+                            return;
                         }
-                    }, type);
+
+                        if (this.selectedEvent !== CropEventType.None) {
+                            tileInstance.setEvent(this.selectedEvent, () => {});
+                        }
+                    });
                 }
 
-                // Posiziona correttamente nella griglia
                 const el = tile.getElement();
                 el.style.gridColumnStart = (x + 1).toString();
                 el.style.gridRowStart = (y + 1).toString();
