@@ -1,6 +1,6 @@
 import { TileBase } from "./TileBase.ts";
-import { CropEventType } from "../types/CropEvents.ts";
-import { TileType } from "../types/RockEvents.ts";
+import { CropEventType } from "../types/CropEventType.ts";
+import { TileType } from "../types/TileType.ts";
 
 export class HarvestableTile extends TileBase {
     private durationMap: Record<CropEventType, number> = {

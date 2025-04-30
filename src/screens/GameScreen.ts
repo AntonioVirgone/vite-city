@@ -1,15 +1,18 @@
-import {CropEventType} from "../types/CropEvents.ts";
+import {CropEventType} from "../types/CropEventType.ts";
 import {Collector} from "../utils/Collector.ts";
 import {EnergyManager} from "../utils/EnergyManager.ts";
 import {TileBase} from "../components/TileBase.ts";
-import {TileType} from "../types/RockEvents.ts";
+import {TileType} from "../types/TileType.ts";
 import {MountainTile} from "../components/MountainTile.ts";
 import {HarvestableTile} from "../components/HarvestableTile.ts";
+import {HouseEventType} from "../types/HouseEventType.ts";
+import {HouseTile} from "../components/HouseTile.ts";
 
 export class GameScreen {
     private element = document.getElementById("game-screen")!;
     private grid = document.querySelector(".grid")!;
-    private buttons = document.querySelectorAll("[data-event]");
+    private cropButtons = document.querySelectorAll("[data-event]");
+    private buildingButtons = document.querySelectorAll("[data-building]");
 
     private selectedEvent: CropEventType = CropEventType.None;
     private collector = new Collector();
@@ -17,11 +20,22 @@ export class GameScreen {
 
     private tiles: TileBase[] = [];
 
+    private selectedBuilding: HouseEventType = HouseEventType.None;
+
     constructor() {
-        this.buttons.forEach((btn) => {
+        this.cropButtons.forEach((btn) => {
             btn.addEventListener("click", () => {
-                const type = (btn as HTMLElement).dataset.event!;
-                this.selectedEvent = type as CropEventType;
+                const crop = (btn as HTMLElement).dataset.event as CropEventType;
+                this.selectedEvent = crop || CropEventType.None;
+                this.selectedBuilding = HouseEventType.None;
+            });
+        });
+
+        this.buildingButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const building = (btn as HTMLElement).dataset.building as HouseEventType;
+                this.selectedBuilding = building || HouseEventType.None;
+                this.selectedEvent = CropEventType.None;
             });
         });
 
@@ -41,7 +55,12 @@ export class GameScreen {
 
                 let tile: TileBase;
 
-                if (type === TileType.Mountain) {
+                if (this.selectedBuilding === HouseEventType.Base) {
+                    tile = new HouseTile(this.grid, () => {
+                        // Clic sulla casa, se servisse
+                    });
+                    this.selectedBuilding = HouseEventType.None; // reset dopo uso
+                } else if (type === TileType.Mountain) {
                     tile = new MountainTile(this.grid, (tileInstance) => {
                         if (this.energyManager.consume(20)) {
                             tileInstance.destroyMountain(4000, () => {});
