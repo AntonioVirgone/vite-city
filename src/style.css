@@ -39,3 +39,12 @@
   background-color: #eee;
   border: 1px solid #ccc;
 }
+
+.tile.mountain {
+  background-color: #777;
+  cursor: not-allowed;
+  /* background-image: url('/img/mountain-icon.png'); /* opzionale */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
