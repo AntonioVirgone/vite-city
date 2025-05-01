@@ -11,7 +11,9 @@ import {HouseTile} from "../components/HouseTile.ts";
 export class GameScreen {
     private element = document.getElementById("game-screen")!;
     private grid = document.querySelector(".grid")!;
-    private cropButtons = document.querySelectorAll("[data-event]");
+
+    private cropSelect = document.getElementById("cropSelect") as HTMLSelectElement;
+
     private buildingButtons = document.querySelectorAll("[data-building]");
 
     private collector = new Collector();
@@ -23,12 +25,11 @@ export class GameScreen {
     private selectedBuilding: HouseEventType = HouseEventType.None;
 
     constructor() {
-        this.cropButtons.forEach((btn) => {
-            btn.addEventListener("click", () => {
-                console.log("crop button clicked");
-                const crop = (btn as HTMLElement).dataset.event as CropEventType;
-                this.selectedEvent = crop || CropEventType.None;
-            });
+        // Nel costruttore, sostituisci i button event listener con:
+        this.cropSelect.addEventListener("change", () => {
+            this.selectedEvent = this.cropSelect.value as CropEventType;
+            // Resetta l’edificio selezionato se si seleziona una coltura
+            this.selectedBuilding = HouseEventType.None;
         });
 
         this.buildingButtons.forEach((btn) => {
@@ -42,15 +43,12 @@ export class GameScreen {
         this.createGrid();
 
         this.grid.addEventListener("click", (e) => {
-            console.log("clicked");
-
             const target = (e.target as HTMLElement).closest(".tile") as HTMLElement;
             if (!target) return;
 
             const index = parseInt(target.dataset.index!);
             if (isNaN(index)) return;
 
-            console.log(this.selectedBuilding);
             if (this.selectedBuilding === HouseEventType.Base) {
                 // Sostituisci il tile esistente con una BuildingTile
                 const buildingTile = new HouseTile(this.grid, () => {});
