@@ -17,7 +17,7 @@ export class HouseTile extends TileBase {
             }
         });
 
-//        parent.appendChild(this.element);
+        parent.appendChild(this.element);
     }
 
     private startProduction() {
