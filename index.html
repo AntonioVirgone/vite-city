@@ -1,32 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Tile Game</title>
-  <link rel="stylesheet" href="/src/style.css" />
+    <meta charset="UTF-8"/>
+    <title>Tile Game</title>
+    <link rel="stylesheet" href="/src/style.css"/>
 </head>
 <body>
 <div id="start-screen">
-  <h1>Tile Game</h1>
-  <button id="start-button">Start</button>
+    <h1>Tile Game</h1>
+    <button id="start-button">Start</button>
 </div>
 
-<div id="game-screen" style="display: none;">
-  <div class="sidebar">
-    <h2>Eventi</h2>
-    <button data-event="tomato">Pomodori</button>
-    <button data-event="potato">Patate</button>
-    <button data-event="grain">Grano</button>
+<div class="container text-center">
+    <div id="game-screen" style="display: none;">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-2">
+                <div class="sidebar">
+                    <select id="cropSelect" class="form-select w-auto" aria-label="Default select example">
+                        <option selected>Scegli un ortaggio</option>
+                        <option value="tomato">Pomodori</option>
+                        <option value="potato">Patate</option>
+                        <option value="grain">Grano</option>
+                    </select>
 
-    <div class="collected-counter">
-      Raccolti: <span id="collected-count">0</span>
-    </div>
+                    <div class="card" style="width: 18rem;">
+                        <p>Scegli un tipo di casa</p>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-success btn-sm" data-building="base">Base</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-building="middle">Media
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" data-building="big">Grande</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-auto">
+                <div class="grid"></div>
+            </div>
+            <div class="col col-lg-2">
+                <div class="collected-counter">
+                    Raccolti: <span id="collected-count">0</span>
+                </div>
 
-    <div class="collected-counter">
-      <span id="energy-count">100</span>
+                <div class="collected-counter">
+                    Energia: <span id="energy-count">100</span>
+                </div>
+            </div>
+        </div>
+
     </div>
-  </div>
-  <div class="grid"></div>
+</div>
 </div>
 
 <script type="module" src="/src/main.ts"></script>

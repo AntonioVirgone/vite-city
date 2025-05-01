@@ -1,4 +1,4 @@
-import { TileType } from "../types/RockEvents.ts";
+import { TileType } from "../types/TileType.ts";
 
 export abstract class TileBase {
     protected element: HTMLDivElement;

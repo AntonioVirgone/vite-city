@@ -10,7 +10,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(20, 30px);
-  grid-template-rows: repeat(20, 30px);
+/*  grid-template-rows: repeat(20, 30px); */
   gap: 2px;
 }
 
@@ -47,4 +47,8 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.house-tile {
+  background-color: #6ac13f;
 }

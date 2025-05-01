@@ -1,5 +1,5 @@
 import { TileBase } from "./TileBase.ts";
-import { TileType } from "../types/RockEvents.ts";
+import { TileType } from "../types/TileType.ts";
 
 export class MountainTile extends TileBase {
     constructor(parent: Element, onClick: (tile: MountainTile) => void, type: TileType = TileType.Mountain) {
