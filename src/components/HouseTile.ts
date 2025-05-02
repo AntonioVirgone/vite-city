@@ -3,9 +3,13 @@ import {TileType} from "../types/TileType.ts";
 
 export class HouseTile extends TileBase {
     private intervalId?: number;
+    private farmerCounter: HTMLDivElement;
+    private farmer: number = 0;
 
     constructor(parent: Element, onClick: (tile: HouseTile) => void, type: TileType = TileType.House) {
         super(parent, (tile) => onClick(tile as HouseTile), type);
+
+        this.farmerCounter = document.getElementById("farmer-count") as HTMLDivElement;
 
         this.element.classList.add("house-tile");
         this.element.style.backgroundColor = "#6ac13f"; // colore casa
@@ -24,7 +28,9 @@ export class HouseTile extends TileBase {
         console.log("Starting production");
         this.intervalId = window.setInterval(() => {
             console.log("Produzione cittadino");
+            this.farmer += 1;
             // Puoi integrarlo con un gestore della popolazione
+            this.farmerCounter.textContent = `${this.farmer}`;
         }, 5000); // ogni 5 secondi produce un cittadino
     }
 
