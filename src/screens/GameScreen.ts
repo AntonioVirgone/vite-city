@@ -87,7 +87,9 @@ export class GameScreen {
                 if (type === TileType.Mountain) {
                     tile = new MountainTile(this.grid, (tileInstance) => {
                         if (this.energyManager.consume(20)) {
-                            tileInstance.destroyMountain(4000, () => {});
+                            tileInstance.destroyMountain(4000, () => {
+                                // devo trasformare il tile nell'array da Mountain a Harvest
+                            });
                         } else {
                             alert("Energia insufficiente per rimuovere la montagna!");
                         }

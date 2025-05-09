@@ -28,6 +28,6 @@ export class EnergyManager {
     }
 
     private updateDisplay() {
-        this.element.textContent = `Energia: ${this._energy}`;
+        this.element.textContent = `${this._energy}`;
     }
 }
