@@ -8,9 +8,10 @@
 }
 
 .grid {
+  padding: 20px 200px;
   display: grid;
-  grid-template-columns: repeat(20, 30px);
-/*  grid-template-rows: repeat(20, 30px); */
+  /*  grid-template-columns: repeat(20, 30px);
+    grid-template-rows: repeat(20, 30px); */
   gap: 2px;
 }
 
